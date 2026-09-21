@@ -1,0 +1,604 @@
+/* =========================================================
+   FIO ELITE ADVERTISING — GLOBAL DESIGN SYSTEM
+   This file is the single source of truth for brand colors,
+   typography, buttons, header, footer, container width and
+   spacing. It is loaded first on every page of the site.
+   Page-specific stylesheets (about.css, portfolio.css,
+   services.css, contact.css) add ONLY layout that is unique
+   to that page and must not redeclare tokens, reset, header,
+   nav, buttons or footer — all of that lives here so every
+   page looks and behaves like the same website.
+   Brand reference: Home page.
+========================================================= */
+
+
+/* =========================================================
+   DESIGN TOKENS
+========================================================= */
+
+:root{
+
+  /* ---- brand colors (sourced from the Home page) ---- */
+  --blue:#082B75;          /* primary */
+  --blue-2:#0d3c98;        /* primary hover / darker */
+  --red:#D81E1B;           /* secondary / accent */
+  --red-2:#b81613;         /* secondary hover / darker */
+  --ink:#0a1020;           /* body text */
+  --muted:#687083;         /* muted / secondary text */
+  --line:#dfe4ec;          /* borders / dividers */
+  --soft:#f5f7fb;          /* light section background */
+  --white:#fff;
+  --dark:#050914;          /* dark section / footer background */
+
+  /* ---- layout ---- */
+  --max:1240px;             /* container width */
+  --radius:22px;            /* card radius */
+  --radius-pill:999px;      /* button / pill radius */
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --shadow:0 25px 70px rgba(8,43,117,.13);
+
+  /* ---- aliases used by the page-specific stylesheets —
+     do not remove: about.css / portfolio.css / services.css
+     reference these names ---- */
+  --navy:var(--dark);
+  --paper:var(--soft);
+  --container:var(--max);
+
+  /* ---- named tokens (design-system spec) ---- */
+  --primary-color:var(--blue);
+  --secondary-color:var(--red);
+  --accent-color:var(--red);
+  --text-color:var(--ink);
+  --muted-color:var(--muted);
+  --background-color:var(--white);
+  --border-color:var(--line);
+  --container-width:var(--max);
+  --button-radius:var(--radius-pill);
+
+  /* ---- typography ---- */
+  --font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+  /* Fluid clamp() is used instead of fixed breakpoint swaps so
+     type scales smoothly between the desktop and mobile figures
+     below, rather than jumping at one pixel value. */
+  --font-h1-desktop:clamp(62px,7.6vw,112px);
+  --font-h2-desktop:clamp(44px,6vw,82px);
+  --font-h3-desktop:24px;
+  --font-h1-mobile:clamp(46px,15vw,62px);
+  --font-h2-mobile:clamp(34px,11vw,44px);
+  --font-h3-mobile:21px;
+
+  --font-body:16px;
+  --font-body-mobile:15px;
+  --font-lead:18px;
+
+  --font-weight-heading:900;
+  --font-weight-subhead:750;
+  --font-weight-body:400;
+  --font-weight-button:800;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--font-family);
+  font-size:var(--font-body);
+  font-weight:var(--font-weight-body);
+  color:var(--text-color);
+  background:#fff;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+body:has(.navlinks.open){overflow:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+
+
+/* =========================================================
+   BASE TYPOGRAPHY
+   Applies everywhere a heading or paragraph has no more
+   specific component class, so every page — including ones
+   with light custom CSS — inherits the same type hierarchy.
+========================================================= */
+
+h1,h2,h3,h4,h5,h6{margin:0 0 .3em;font-weight:var(--font-weight-heading);line-height:.95;letter-spacing:-.03em}
+h1{font-size:var(--font-h1-desktop)}
+h2{font-size:var(--font-h2-desktop)}
+h3{font-size:var(--font-h3-desktop);font-weight:var(--font-weight-subhead);letter-spacing:-.01em}
+p{margin:0 0 1em;color:var(--text-color)}
+@media(max-width:760px){
+  h1{font-size:var(--font-h1-mobile)}
+  h2{font-size:var(--font-h2-mobile)}
+  h3{font-size:var(--font-h3-mobile)}
+  body{font-size:var(--font-body-mobile)}
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container{width:min(calc(100% - 48px),var(--max));margin:auto}
+.page-noise{
+  position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================================
+   HEADER / NAVIGATION
+   Identical on every page: 92px height, same logo size, same
+   link styling, same "Start a project" CTA, same mobile menu.
+========================================================= */
+
+.site-header{
+  position:relative;z-index:100;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(8,43,117,.08);
+}
+.nav{height:92px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.logo-link,.nav>a:first-child{display:flex;align-items:center}
+.logo{width:190px;height:auto;object-fit:contain}
+.navlinks{display:flex;align-items:center;gap:34px;font-size:14px;font-weight:700}
+.navlinks>a:not(.btn){position:relative;padding:10px 0;color:#303847}
+.navlinks>a:not(.btn)::after{
+  content:"";position:absolute;left:0;bottom:2px;width:0;height:2px;
+  background:var(--red);transition:.35s var(--ease)
+}
+.navlinks>a:not(.btn):hover::after,
+.navlinks>a.active::after,
+.navlinks>a[aria-current="page"]::after{width:100%}
+.navlinks>a.active,
+.navlinks>a[aria-current="page"]{color:var(--blue)}
+.menu{display:none;border:0;background:none;font-size:28px;color:var(--blue);cursor:pointer}
+/* Legacy 3-span hamburger markup (used on a couple of pages) rendered the same way as the ☰ glyph */
+.menu span{display:block;width:22px;height:2px;margin:5px 0;background:var(--blue)}
+
+
+/* =========================================================
+   BUTTONS
+   One button system, reused everywhere: .btn + a color
+   modifier. Same height, padding, radius, weight and motion
+   on every page.
+========================================================= */
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:14px;
+  min-height:52px;padding:0 24px;border:1px solid rgba(8,43,117,.22);
+  border-radius:var(--radius-pill) !important;
+  font-family:var(--font-family);
+  font-weight:var(--font-weight-button);font-size:13px;letter-spacing:.02em;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s var(--ease),color .3s var(--ease);
+  cursor:pointer;
+}
+.btn span{transition:transform .3s var(--ease)}
+.btn:hover{transform:translateY(-3px)}
+.btn:hover span{transform:translateX(4px)}
+.btn-blue{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 12px 28px rgba(8,43,117,.18);border-radius:var(--radius-pill) !important}
+.btn-blue:hover{background:var(--blue-2);box-shadow:0 18px 35px rgba(8,43,117,.24)}
+.btn-red{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 12px 28px rgba(216,30,27,.2);border-radius:var(--radius-pill) !important}
+.btn-red:hover{background:var(--red-2);box-shadow:0 18px 35px rgba(216,30,27,.24)}
+.btn-outline{background:#fff;color:var(--blue);border-radius:var(--radius-pill) !important}
+.btn-outline:hover{background:var(--blue);color:#fff}
+.btn-white{background:#fff;color:var(--blue);border-color:#fff}
+.btn-white:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.nav-cta{border-radius:var(--radius-pill) !important}
+/* .nav-cta on its own (no .btn) styled as the primary CTA so older markup still matches the system */
+a.nav-cta:not(.btn){
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:44px;padding:0 20px;background:var(--blue);color:#fff;
+  border-radius:var(--radius-pill);font-weight:var(--font-weight-button);font-size:13px;
+  transition:transform .3s var(--ease),background .3s var(--ease);
+}
+a.nav-cta:not(.btn):hover{background:var(--blue-2);transform:translateY(-2px)}
+
+
+/* =========================================================
+   COMMON
+========================================================= */
+
+.eyebrow{
+  display:flex;align-items:center;gap:10px;
+  color:var(--blue);font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase
+}
+.eyebrow>span{display:inline-block;width:26px;height:2px;background:var(--red)}
+.red-eyebrow{color:#fff}
+.red-eyebrow>span{background:var(--red)}
+.lead{font-size:var(--font-lead);line-height:1.75;color:#5d6678}
+.blue{color:var(--blue)}
+.red{color:var(--red)}
+.light-blue{color:#86a7ff}
+.dark{background:var(--dark);color:#fff}
+.section-space{padding:130px 0}
+.section-head,.performance-title{
+  display:grid;grid-template-columns:1.05fr .75fr;gap:70px;align-items:end;margin-bottom:65px
+}
+.section-head h2,.performance-title h2{
+  font-size:var(--font-h2-desktop);line-height:.9;letter-spacing:-.065em;margin:24px 0 0;font-weight:950
+}
+.section-head>p,.performance-title>p{font-size:16px;line-height:1.8;color:#697386;max-width:520px;margin:0}
+
+
+/* =========================================================
+   HERO (Home page)
+========================================================= */
+
+.hero{
+  min-height:720px;
+  padding-top:85px;padding-bottom:90px;
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:45px;
+}
+.hero-copy{position:relative;z-index:4}
+.hero h1{
+  margin:26px 0 25px;
+  font-size:var(--font-h1-desktop);
+  line-height:.83;letter-spacing:-.085em;font-weight:950
+}
+.word-blue{color:var(--blue)}
+.word-red{
+  color:var(--red);
+  position:relative;display:inline-block
+}
+.word-red::after{
+  content:"";position:absolute;left:3%;right:0;bottom:-10px;height:6px;
+  background:var(--red);transform:skewX(-28deg);transform-origin:left;
+  animation:underlineIn 1s .8s var(--ease) both
+}
+.hero .lead{max-width:650px;margin:0 0 30px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-meta{display:flex;gap:0;margin-top:48px;border-top:1px solid var(--line);max-width:510px}
+.hero-meta div{flex:1;padding:17px 18px 0 0;display:flex;flex-direction:column;gap:5px}
+.hero-meta strong{color:var(--red);font-size:11px}
+.hero-meta span{font-size:12px;font-weight:800;color:#5e6878;text-transform:uppercase;letter-spacing:.08em}
+
+/* ORIGINAL HERO VISUAL + ANIMATION */
+.hero-visual{min-height:500px;position:relative;display:flex;align-items:center;justify-content:center;overflow:visible}
+.ring{position:absolute;width:410px;height:410px;border:1px solid rgba(8,43,117,.22);border-radius:50%;transform:rotate(-25deg);animation:ringRotate 16s linear infinite}
+.ring::after{content:"";position:absolute;width:16px;height:16px;top:30px;right:60px;background:var(--red);border-radius:50%;box-shadow:0 0 30px rgba(216,30,27,.5);animation:pulseDot 2s ease-in-out infinite}
+.float{position:absolute;padding:18px 20px;background:rgba(255,255,255,.94);border:1px solid rgba(8,43,117,.10);border-radius:16px;box-shadow:0 20px 50px rgba(8,21,47,.12);backdrop-filter:blur(10px);max-width:210px;z-index:3;animation:floatCard 5s ease-in-out infinite}
+.float strong{display:block;font-size:13px;font-weight:900;margin-bottom:5px;color:var(--blue)}
+.float small{display:block;color:#697386;font-size:11px;line-height:1.5}
+.f1{top:40px;left:0;animation-delay:0s}.f2{top:150px;right:-10px;animation-delay:1s}.f3{bottom:70px;left:20px;animation-delay:2s}.f4{bottom:15px;right:25px;animation-delay:3s}
+.hero-motion{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.motion-grid{position:absolute;inset:8%;opacity:.45;background-image:linear-gradient(rgba(8,43,117,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(8,43,117,.08) 1px,transparent 1px);background-size:42px 42px;transform:perspective(500px) rotateX(55deg) scale(1.35);transform-origin:center bottom;animation:gridMove 8s linear infinite}
+.motion-line{position:absolute;height:2px;transform-origin:left center;opacity:.65}.line-a{width:300px;left:12%;top:31%;background:linear-gradient(90deg,transparent,var(--blue));transform:rotate(-18deg);animation:lineSweep 5s ease-in-out infinite}.line-b{width:260px;right:5%;bottom:27%;background:linear-gradient(90deg,var(--red),transparent);transform:rotate(24deg);animation:lineSweep 6s 1s ease-in-out infinite reverse}
+.motion-dot{position:absolute;width:8px;height:8px;border-radius:50%;box-shadow:0 0 24px currentColor}.dot-a{left:23%;top:21%;color:var(--blue);background:var(--blue);animation:dotFloat 4s ease-in-out infinite}.dot-b{right:21%;top:42%;color:var(--red);background:var(--red);animation:dotFloat 5s 1s ease-in-out infinite reverse}.dot-c{left:38%;bottom:17%;color:var(--red);background:var(--red);animation:dotFloat 4.5s 2s ease-in-out infinite}
+.motion-word{position:absolute;right:14%;top:24%;font-size:20px;line-height:.82;font-weight:900;letter-spacing:-.08em;color:rgba(8,43,117,.12);animation:wordFloat 5s ease-in-out infinite}.motion-word b{color:rgba(216,30,27,.14)}
+@keyframes ringRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.35);opacity:1}}
+@keyframes gridMove{0%{background-position:0 0,0 0}100%{background-position:0 42px,42px 0}}
+@keyframes lineSweep{0%,100%{opacity:.15;transform:translateX(-18px) rotate(-18deg)}50%{opacity:.85;transform:translateX(18px) rotate(-18deg)}}
+@keyframes dotFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-16px)}}
+@keyframes wordFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.marquee{overflow:hidden;background:var(--blue);color:#fff;padding:17px 0;border-top:1px solid rgba(255,255,255,.15)}
+.track{width:max-content;display:flex;align-items:center;gap:24px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;animation:marquee 32s linear infinite}
+.track i{font-style:normal;color:var(--red);font-size:14px}
+
+
+/* =========================================================
+   CLIENTS
+========================================================= */
+
+.clients-section{padding:70px 0 0;overflow:hidden}
+.clients-heading{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:35px}
+.clients-heading p{max-width:490px;margin:0;color:#737c8d;line-height:1.7;font-size:14px}
+.logo-marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.logo-track{display:flex;width:max-content;animation:logoMarquee 42s linear infinite}
+.client-logo{
+  width:210px;height:115px;padding:22px 30px;border-right:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  filter:grayscale(1);opacity:.62;transition:.4s var(--ease);background:#fff
+}
+.client-logo:hover{filter:grayscale(0);opacity:1;transform:scale(1.03)}
+.client-logo img{max-width:150px;max-height:70px;width:auto;height:auto;object-fit:contain}
+
+
+/* =========================================================
+   SERVICES (Home page list)
+========================================================= */
+
+.services-list{border-top:1px solid var(--ink)}
+.service-row{
+  min-height:170px;border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:75px 1.05fr 1fr 55px;gap:30px;align-items:center;
+  position:relative;overflow:hidden;transition:.45s var(--ease)
+}
+.service-row::before{
+  content:"";position:absolute;inset:0;background:var(--blue);transform:translateY(101%);
+  transition:.5s var(--ease);z-index:-1
+}
+.service-row:hover{color:#fff;padding-left:20px;padding-right:20px}
+.service-row:hover::before{transform:translateY(0)}
+.service-row:hover p{color:rgba(255,255,255,.75)}
+.service-row:hover .service-number,.service-row:hover .service-title small{color:#fff}
+.service-row:hover .service-arrow{background:var(--red);border-color:var(--red);color:#fff;transform:rotate(45deg)}
+.service-number{font-size:12px;font-weight:900;color:var(--red)}
+.service-title small{display:block;text-transform:uppercase;letter-spacing:.14em;font-size:9px;color:#8a92a1;font-weight:900;margin-bottom:8px}
+.service-title h3{font-size:clamp(28px,3vw,43px);margin:0;letter-spacing:-.055em;font-weight:900}
+.service-title em{font-style:normal;color:var(--red)}
+.service-row:hover .service-title em{color:#fff}
+.service-row p{font-size:14px;line-height:1.65;color:#687284;margin:0;transition:.4s}
+.service-arrow{
+  width:42px;height:42px;border:1px solid var(--line);display:grid;place-items:center;
+  border-radius:50%;font-size:18px;transition:.4s var(--ease)
+}
+.services-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:28px;color:#7a8392;font-size:12px}
+.services-bottom a{color:var(--blue);font-weight:900}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+========================================================= */
+
+.achievements-section{padding:30px 0 70px;background:linear-gradient(#fff,#f7f9fc)}
+.achievement-heading{margin-bottom:0}
+
+
+/* =========================================================
+   PERFORMANCE
+========================================================= */
+
+.performance-section{padding:125px 0;background:#f4f6fa}
+.performance-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.stat-card{min-height:285px;background:#fff;padding:32px;border:1px solid #e2e6ed;position:relative;overflow:hidden}
+.stat-card::after{
+  content:"";position:absolute;width:130px;height:130px;border-radius:50%;
+  border:1px solid rgba(8,43,117,.08);right:-55px;bottom:-55px
+}
+.stat-number{display:block;color:var(--blue);font-size:72px;font-weight:950;letter-spacing:-.08em;line-height:1;margin-bottom:70px}
+.text-stat{font-size:62px}
+.arrow-stat{color:var(--red)}
+.stat-card h3{font-size:17px;margin:0 0 10px;font-weight:750}
+.stat-card p{color:#737d8e;font-size:13px;line-height:1.65;margin:0;max-width:230px}
+
+
+/* =========================================================
+   WORK
+========================================================= */
+
+.selected-work-section{padding:125px 0}
+.selected-work-section .section-head>p{color:#aeb6c7}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.work{position:relative;min-height:500px;overflow:hidden;background:#101624}
+.work img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .8s var(--ease),filter .6s}
+.work::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,rgba(0,0,0,.85));z-index:1}
+.work:hover img{transform:scale(1.07);filter:saturate(1.1)}
+.work-content{position:absolute;left:28px;right:28px;bottom:28px;z-index:2}
+.work-content small{color:#ff7773;text-transform:uppercase;font-size:10px;font-weight:900;letter-spacing:.15em}
+.work-content h3{font-size:30px;letter-spacing:-.04em;margin:8px 0 0;font-weight:900}
+.work-content>span{position:absolute;right:0;bottom:0;width:42px;height:42px;border:1px solid rgba(255,255,255,.4);border-radius:50%;display:grid;place-items:center;transition:.3s}
+.work:hover .work-content>span{background:var(--red);border-color:var(--red);transform:rotate(45deg)}
+
+
+/* =========================================================
+   WHY
+========================================================= */
+
+.why-section{padding:130px 0}
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.why-card{padding:35px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:255px;transition:.4s var(--ease)}
+.why-card:hover{background:#f7f9fc;transform:translateY(-4px)}
+.why-top{display:flex;align-items:center;gap:18px;margin-bottom:45px}
+.why-index{font-size:11px;font-weight:900;color:var(--red)}
+.why-line{height:1px;background:var(--line);flex:1}
+.why-card h3{font-size:24px;letter-spacing:-.03em;margin:0 0 12px;font-weight:900}
+.why-card p{color:#70798a;line-height:1.7;font-size:14px;max-width:470px;margin:0}
+
+
+/* =========================================================
+   ABOUT BAND (Home page)
+========================================================= */
+
+.about-section{padding:20px 0 130px}
+.about-band{
+  background:#f3f5f9;padding:75px;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+  position:relative;overflow:hidden
+}
+.about-band::before{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(8,43,117,.1);border-radius:50%;right:-130px;top:-160px}
+.about-band h2{font-size:clamp(48px,6vw,80px);line-height:.88;letter-spacing:-.07em;margin:25px 0 0;font-weight:900}
+.about-band .lead{font-size:17px;margin:0 0 28px}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.final-cta{padding:140px 0}
+.final-cta h2{font-size:clamp(58px,9vw,130px);line-height:.8;letter-spacing:-.085em;margin:25px 0;font-weight:900}
+.final-cta .lead{color:#aeb6c7;max-width:620px}
+.final-cta .btn{margin-top:10px}
+
+
+/* =========================================================
+   INNER-PAGE COMPONENTS
+   Shared building blocks used by the service sub-pages
+   (corporate-branding, creative-design, digital-printing,
+   exhibition-branding, large-format-printing, offset-printing,
+   printing, uv-printing) so they render fully styled and on
+   brand from the shared stylesheet, without each page needing
+   its own CSS file.
+========================================================= */
+
+.page-hero{
+  padding:175px 0 90px;
+  background:linear-gradient(180deg,var(--soft) 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+}
+.page-hero .eyebrow{margin-bottom:22px}
+.page-hero h1{
+  font-size:clamp(46px,6.4vw,84px);
+  line-height:.94;letter-spacing:-.045em;font-weight:900;margin:0 0 22px;
+}
+.page-hero p{max-width:640px;font-size:var(--font-lead);line-height:1.75;color:var(--muted);margin:0}
+
+.service-detail{
+  display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;
+  padding:100px 0;align-items:start;
+}
+.service-detail h2{
+  font-size:clamp(34px,4.2vw,54px);line-height:.98;letter-spacing:-.03em;
+  font-weight:900;margin:22px 0 0;
+}
+.service-detail>div:last-child>p{color:var(--muted);font-size:16px;line-height:1.8;margin:0 0 28px}
+
+.feature-list{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px 20px;
+  margin:0 0 34px;padding-top:20px;border-top:1px solid var(--line);
+}
+.feature-list div{padding:14px 0;font-size:14px;font-weight:700;border-bottom:1px solid var(--line)}
+.feature-list strong{font-weight:700}
+
+.quote{
+  padding:20px 0 100px;max-width:760px;
+  font-size:clamp(24px,3vw,32px);line-height:1.45;font-weight:700;
+  letter-spacing:-.015em;color:var(--ink);
+}
+.quote small{
+  display:block;margin-top:20px;font-size:12px;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+}
+
+/* Printing hub grid (printing.html) — also reusable anywhere a
+   simple 4-up linked card grid is needed */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{
+  padding:32px 26px;border:1px solid var(--line);border-radius:var(--radius);
+  transition:.4s var(--ease);
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 20px 45px rgba(8,21,47,.08)}
+.num{display:block;font-size:12px;font-weight:900;color:var(--red);margin-bottom:14px}
+.card h3{font-size:20px;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+.card p{font-size:14px;line-height:1.7;color:var(--muted);margin:0 0 20px}
+.card .btn{font-size:12px;padding:0 18px;min-height:44px}
+
+
+/* =========================================================
+   FOOTER
+   One footer structure, reused everywhere.
+========================================================= */
+
+footer{background:#02050b;color:#fff;padding:75px 0 25px}
+.foot{display:grid;grid-template-columns:1.2fr .6fr .8fr;gap:80px;padding-bottom:70px}
+.foot h3{font-size:15px;letter-spacing:.08em;margin:0 0 17px;font-weight:800}
+.foot p{font-size:13px;line-height:1.8;max-width:380px;margin:0}
+.foot a:not(.btn){color:#c5cad5;transition:.25s}
+.foot a:not(.btn):hover{color:#fff}
+.muted{color:#7d8697;font-size:12px;line-height:1.7}
+.footer-bottom{border-top:1px solid #171d29;padding-top:22px}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes underlineIn{from{transform:scaleX(0) skewX(-28deg)}to{transform:scaleX(1) skewX(-28deg)}}
+@keyframes float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-18px,0)}}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes slash{0%,100%{transform:rotate(-31deg) translateX(0)}50%{transform:rotate(-27deg) translateX(-15px)}}
+@keyframes spinSlow{to{transform:rotate(376deg)}}
+@keyframes corePulse{0%,100%{box-shadow:0 30px 70px rgba(8,43,117,.2)}50%{box-shadow:0 35px 90px rgba(216,30,27,.18)}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@keyframes logoMarquee{to{transform:translateX(-50%)}}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1050px){
+  .navlinks{gap:20px}
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:70px}
+  .hero-visual{min-height:520px}
+  .section-head,.performance-title{grid-template-columns:1fr;gap:25px}
+  .performance-grid{grid-template-columns:repeat(2,1fr)}
+  .service-row{grid-template-columns:55px 1fr 1fr 45px}
+  .foot{gap:40px}
+  .service-detail{grid-template-columns:1fr;gap:35px}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  .container{width:min(calc(100% - 30px),var(--max))}
+  .nav{height:76px}
+  .logo{width:150px}
+  .menu{display:block;position:relative;z-index:101}
+  .navlinks{
+    position:fixed;inset:76px 0 0;background:#fff;
+    display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+    padding:35px 25px;transform:translateX(100%);transition:.4s var(--ease);
+    box-shadow:0 20px 50px rgba(0,0,0,.1)
+  }
+  .navlinks.open{transform:translateX(0)}
+  .navlinks>a:not(.btn){font-size:22px;padding:14px 0}
+  .nav-cta{margin-top:15px;width:100%}
+
+  .hero{padding-top:50px;padding-bottom:55px}
+  .hero h1{font-size:clamp(57px,17vw,90px)}
+  .hero .lead{font-size:16px}
+  .hero-visual{min-height:420px}
+  .art-core{width:170px;height:170px}
+  .art-core strong{font-size:34px}
+  .art-card{min-width:135px;padding:12px 14px}
+  .art-card strong{font-size:12px}
+  .card-a{left:12px;top:195px}.card-b{right:12px;top:55px}.card-c{right:20px;bottom:20px}
+  .orbit-line{width:320px;height:320px}
+  .orbit-two{width:370px;height:230px}
+  .circle-blue{width:270px;height:270px}.circle-red{width:180px;height:180px}
+  .art-slash{width:400px;height:90px;right:-90px;top:170px}
+  .art-square{width:130px;height:130px;left:30px;top:45px}
+
+  .section-space,.why-section,.performance-section,.selected-work-section{padding:85px 0}
+  .section-head h2,.performance-title h2{font-size:52px}
+  .clients-section{padding-top:45px}
+  .clients-heading{display:block}
+  .clients-heading p{margin-top:18px}
+  .client-logo{width:175px;height:100px}
+  .client-logo img{max-width:125px;max-height:60px}
+
+  .service-row{grid-template-columns:42px 1fr 38px;gap:12px;padding:25px 0;min-height:0}
+  .service-row p{grid-column:2 / 3}
+  .service-title h3{font-size:29px}
+  .service-arrow{grid-column:3;grid-row:1}
+  .services-bottom{display:block}.services-bottom a{display:block;margin-top:10px}
+
+  .performance-grid,.grid-3,.why-grid{grid-template-columns:1fr}
+  .stat-card{min-height:230px}
+  .stat-number{margin-bottom:45px}
+  .work{min-height:420px}
+  .about-band{padding:45px 25px;grid-template-columns:1fr;gap:35px}
+  .about-section{padding-bottom:85px}
+  .final-cta{padding:95px 0}
+  .final-cta h2{font-size:67px}
+  .foot{grid-template-columns:1fr;gap:45px;padding-bottom:50px}
+
+  .page-hero{padding:135px 0 60px}
+  .service-detail{padding:60px 0}
+  .feature-list{grid-template-columns:1fr}
+  .grid-4{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
