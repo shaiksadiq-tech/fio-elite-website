@@ -14,25 +14,45 @@ document.addEventListener("DOMContentLoaded", () => {
   --------------------------------------------------------- */
   const menu = document.querySelector(".menu");
   const nav = document.querySelector(".navlinks");
+  const mobileQuery = window.matchMedia("(max-width:760px)");
 
   if (menu && nav) {
-    menu.addEventListener("click", () => {
-      const open = nav.classList.toggle("open");
+    const setMenuState = open => {
+      nav.classList.toggle("open", open);
+      document.body.classList.toggle("menu-open", open);
       menu.setAttribute("aria-expanded", String(open));
-      if (!menu.querySelector("span")) {
-        menu.textContent = open ? "×" : "☰";
-      }
+      menu.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+      if (!menu.querySelector("span")) menu.textContent = open ? "×" : "☰";
+    };
+
+    menu.addEventListener("click", () => {
+      setMenuState(!nav.classList.contains("open"));
     });
 
     nav.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
-        nav.classList.remove("open");
-        menu.setAttribute("aria-expanded", "false");
-        if (!menu.querySelector("span")) {
-          menu.textContent = "☰";
+      link.addEventListener("click", () => setMenuState(false));
+    });
+
+    nav.querySelectorAll(".nav-service-menu").forEach(details => {
+      details.addEventListener("toggle", () => {
+        if (!mobileQuery.matches) return;
+        if (details.open) {
+          nav.scrollTop = Math.max(0, details.offsetTop - 8);
         }
       });
     });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && nav.classList.contains("open")) {
+        setMenuState(false);
+        menu.focus();
+      }
+    });
+
+    const closeMenuOnDesktop = () => {
+      if (!mobileQuery.matches) setMenuState(false);
+    };
+    mobileQuery.addEventListener?.("change", closeMenuOnDesktop);
   }
 
   /* ---------------------------------------------------------
